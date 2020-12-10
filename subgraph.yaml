@@ -1,0 +1,30 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: IDEX
+    network: mainnet
+    source:
+      address: "0xB705268213D593B8FD88d3FDEFF93AFF5CbDcfAE"
+      abi: IDEX
+      startBlock: 7683790
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - Transfer
+        - Approval
+      abis:
+        - name: IDEX
+          file: ./abis/IDEX.json
+      eventHandlers:
+        - event: Swap(indexed address,uint256)
+          handler: handleSwap
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+      file: ./src/mapping.ts
